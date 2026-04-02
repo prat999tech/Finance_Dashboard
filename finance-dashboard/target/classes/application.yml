@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: finance-dashboard
+
+  # Active profile can be overridden with: -Dspring.profiles.active=dev
+  profiles:
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: update          # use 'validate' or 'none' after initial setup
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # PostgreSQL (production) — override via env vars in deployment
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/finance_dashboard}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+# JWT settings
+app:
+  jwt:
+    secret: ${JWT_SECRET:ThisIsAVeryLongSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm!}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 hours
+
+# Springdoc / Swagger UI
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+server:
+  port: 8080
+  error:
+    include-message: always      # show error messages in responses
+    include-binding-errors: always
+
+logging:
+  level:
+    com.finance.dashboard: INFO
+    org.springframework.security: WARN
